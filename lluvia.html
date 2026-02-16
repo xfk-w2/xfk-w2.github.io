@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Lluvia de I LOVE YOU</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #000;
+      /* Fondo negro */
+      font-family: 'Arial', sans-serif;
+      position: relative;
+      cursor: pointer;
+    }
+
+    /* Estilo del texto: Rosa bonito + Motion Trail (Estela) */
+    .trail-text {
+      position: absolute;
+      color: #FFB7C5;
+      /* Rosa Pastel */
+      font-size: 20px;
+      font-weight: bold;
+      user-select: none;
+      pointer-events: none;
+      /* Motion Trail / Echo effect using text-shadow - Rosa Pastel */
+      text-shadow:
+        0px -10px 0px rgba(255, 183, 197, 0.6),
+        0px -20px 0px rgba(255, 183, 197, 0.4),
+        0px -30px 0px rgba(255, 183, 197, 0.2);
+      animation: caer linear forwards;
+    }
+
+    /* Estilos para las imagenes en la lluvia */
+    /* Estilos para las imagenes en la lluvia */
+    .rain-image {
+      position: absolute;
+      object-fit: cover;
+      border: 2px solid #fff;
+      /* Marco blanco */
+      /* Sombra rosa suave para integrar - Rosa Pastel */
+      box-shadow: 0 0 5px rgba(255, 183, 197, 0.5);
+      user-select: none;
+      pointer-events: none;
+      animation: caer linear forwards;
+      /* Restricciones de tamaño - Más grandes */
+      min-height: 60px;
+      max-height: 160px;
+      width: auto;
+      z-index: 10;
+      /* Imágenes por encima del texto si coinciden */
+    }
+
+    /* Animación de caida */
+    @keyframes caer {
+      0% {
+        top: -150px;
+        /* Empezar más arriba para dar tiempo al trail */
+        opacity: 0;
+        transform: translateY(0);
+      }
+
+      5% {
+        opacity: 1;
+      }
+
+      90% {
+        opacity: 1;
+      }
+
+      100% {
+        top: 110%;
+        /* Caer hasta el final */
+        opacity: 0;
+        transform: translateY(110vh);
+      }
+    }
+
+    /* Estilo para el click (estatico) */
+    .estatico {
+      animation: estallar 1s ease-out forwards;
+    }
+
+    @keyframes estallar {
+      0% {
+        opacity: 0;
+        transform: scale(0.5);
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0;
+        transform: scale(2);
+      }
+    }
+
+    /* Responsividad para móviles */
+    /* Responsividad para móviles */
+    @media (max-width: 600px) {
+      .trail-text {
+        font-size: 24px;
+        /* Un poco más grande en móviles */
+        /* Ajustar trail - Rosa Pastel */
+        text-shadow:
+          0px -8px 0px rgba(255, 183, 197, 0.6),
+          0px -16px 0px rgba(255, 183, 197, 0.4),
+          0px -24px 0px rgba(255, 183, 197, 0.2);
+      }
+
+      .rain-image {
+        max-height: 120px;
+        /* Más grandes en móviles */
+        min-height: 50px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <script>
+    // Configuración de Imágenes (URLs placeholders)
+    // CAMBIA ESTAS URLS POR LAS TUYAS
+    const imageUrls = [
+      "./WhatsApp Image 2026-02-16 at 15.20.42.jpeg",
+      "./WhatsApp Image 2026-02-16 at 15.20.43 (1).jpeg",
+      "./WhatsApp Image 2026-02-16 at 15.20.43.jpeg",
+      "./WhatsApp Image 2026-02-16 at 15.21.27 (1).jpeg",
+      "./WhatsApp Image 2026-02-16 at 15.21.27.jpeg"
+    ];
+
+    let currentPhotoIndex = 0;
+    let isPhotoFalling = false; // Flag para controlar secuencia "una detrás de otra"
+
+    // Función para crear SOLO texto (Lluvia constante)
+    function crearTextoLluvia() {
+      const elemento = document.createElement("div");
+      elemento.classList.add("trail-text");
+      elemento.innerText = "I LOVE YOU";
+
+      // Aleatoriedad
+      elemento.style.left = Math.random() * 95 + "vw";
+      elemento.style.fontSize = (14 + Math.random() * 18) + "px"; // Tamaño variado
+
+      const duration = 3 + Math.random() * 4; // Entre 3s y 7s (lento y moderado)
+      elemento.style.animationDuration = duration + "s";
+
+      // Opacidad aleatoria para dar profundidad
+      elemento.style.opacity = 0.6 + Math.random() * 0.4;
+
+      document.body.appendChild(elemento);
+
+      // Limpieza
+      setTimeout(() => {
+        elemento.remove();
+      }, duration * 1000);
+    }
+
+    // Función para crear SOLO imágenes (Secuencial)
+    function crearImagenSecuencial() {
+      // Si ya hay una foto "cayendo" (o hace muy poco que salió), esperamos.
+      // Para asegurar "1 detrás de la otra", podemos esperar un tiempo fijo 
+      // o usar la bandera isPhotoFalling.
+      if (isPhotoFalling) return;
+
+      isPhotoFalling = true; // Bloquear nuevas fotos
+
+      const img = document.createElement("img");
+      img.classList.add("rain-image");
+      img.src = imageUrls[currentPhotoIndex];
+
+      // Ciclar índice
+      currentPhotoIndex = (currentPhotoIndex + 1) % imageUrls.length;
+
+      img.style.left = (10 + Math.random() * 80) + "vw"; // Centrado, no bordes extremos
+
+      // Duración consistente para fotos (para calcular mejor el "una detrás de otra")
+      const duration = 4 + Math.random() * 2; // 4s a 6s
+      img.style.animationDuration = duration + "s";
+
+      document.body.appendChild(img);
+
+      // Desbloquear para la siguiente foto poco antes de que termine esta
+      // para que parezca una cadena continua pero no amontonada.
+      // Desbloqueamos al 70% de la caída.
+      setTimeout(() => {
+        isPhotoFalling = false;
+      }, (duration * 1000) * 0.7);
+
+      // Limpieza
+      setTimeout(() => {
+        img.remove();
+      }, duration * 1000);
+    }
+
+    // Intervalos separados
+    // 1. Lluvia de texto: Moderada pero continua (cada 120ms)
+    // Reduce este número para MÁS lluvia, auméntalo para MENOS.
+    setInterval(crearTextoLluvia, 120);
+
+    // 2. Control de imágenes: Intentar lanzar foto cada 1s, 
+    // pero la función `crearImagenSecuencial` se autoprotege con `isPhotoFalling`.
+    setInterval(crearImagenSecuencial, 1000);
+
+    // Click Effect
+    document.addEventListener("click", (e) => {
+      const estatico = document.createElement("div");
+      estatico.classList.add("trail-text", "estatico");
+      estatico.innerText = "I LOVE YOU";
+      estatico.style.left = e.clientX + "px";
+      estatico.style.top = e.clientY + "px";
+      estatico.style.transform = "translate(-50%, -50%)";
+      document.body.appendChild(estatico);
+
+      setTimeout(() => {
+        estatico.remove();
+      }, 1000);
+    });
+  </script>
+</body>
+
+</html>
