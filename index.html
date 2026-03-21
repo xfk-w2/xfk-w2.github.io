@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Vanne - The Stitch Files</title>
+    <style>
+        /* CSS Reset & Base Variables */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-dark: #030308;
+            /* Negro profundo */
+            --neon-purple: #9d00ff;
+            /* Morado neón */
+            --cyan-blue: #00f0ff;
+            /* Azul cian (Stitch) */
+            --pure-white: #ffffff;
+            --text-glow-cyan: 0 0 10px rgba(0, 240, 255, 0.8), 0 0 20px rgba(0, 240, 255, 0.4);
+            --text-glow-purple: 0 0 10px rgba(157, 0, 255, 0.9), 0 0 20px rgba(157, 0, 255, 0.6), 0 0 30px rgba(157, 0, 255, 0.4);
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--pure-white);
+            /* Typography: Monospace para look futurista/escáner y fallback a sans-serif moderno */
+            font-family: 'Courier New', Courier, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* --- Fondo: Efecto Estrellas Paralaje --- */
+        .stars-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: transparent url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="300" height="300"><circle cx="15" cy="50" r="1.5" fill="white" opacity="0.6"/><circle cx="150" cy="180" r="1" fill="white" opacity="0.3"/><circle cx="280" cy="80" r="2" fill="white" opacity="0.8"/><circle cx="80" cy="270" r="1.2" fill="white" opacity="0.5"/><circle cx="220" cy="20" r="0.8" fill="white" opacity="0.4"/></svg>') repeat;
+            animation: moveStars 120s linear infinite;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        @keyframes moveStars {
+            from {
+                background-position: 0 0;
+            }
+
+            to {
+                background-position: -2000px 1000px;
+            }
+        }
+
+        /* --- Gestión de Escenas --- */
+        .scene {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1s ease-in-out;
+            z-index: 10;
+        }
+
+        .scene.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* --- Escena 1: Preloader --- */
+        .loader-wrapper {
+            width: 80%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            position: relative;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.2);
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: var(--cyan-blue);
+            box-shadow: 0 0 15px var(--cyan-blue);
+            transition: width 0.1s linear;
+        }
+
+        .progress-text {
+            margin-top: 15px;
+            font-size: 1.2rem;
+            color: var(--pure-white);
+            text-shadow: var(--text-glow-cyan);
+            letter-spacing: 3px;
+        }
+
+        /* --- Escena 2: Atributos (The Stitch Files) --- */
+        .attributes-wrapper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .attr-card {
+            position: absolute;
+            right: -100%;
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 4px solid var(--cyan-blue);
+            padding: 15px 30px;
+            font-size: 1.2rem;
+            white-space: nowrap;
+            box-shadow: -5px 0 15px rgba(0, 240, 255, 0.1);
+            backdrop-filter: blur(4px);
+            transition: right 0.8s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.5s ease-out;
+            /* responsive font */
+        }
+
+        @media (max-width: 600px) {
+            .attr-card {
+                font-size: 1rem;
+                padding: 12px 20px;
+            }
+        }
+
+        .attr-card.special-neon {
+            border-left: 4px solid var(--neon-purple);
+            color: var(--neon-purple);
+            font-weight: bold;
+            font-size: 1.5rem;
+            text-shadow: var(--text-glow-purple);
+            box-shadow: -5px 0 25px rgba(157, 0, 255, 0.3);
+            background: rgba(157, 0, 255, 0.05);
+        }
+
+        /* --- Escena 3: Transición (Máquina de escribir) --- */
+        .typewriter {
+            font-size: 1.5rem;
+            color: var(--pure-white);
+            overflow: hidden;
+            border-right: 2px solid var(--neon-purple);
+            white-space: nowrap;
+            text-shadow: var(--text-glow-purple);
+            width: 0;
+        }
+
+        @media (max-width: 600px) {
+            .typewriter {
+                font-size: 1rem;
+            }
+        }
+
+        .typing-anim {
+            animation: typing 3s steps(40, end), blink-caret .75s step-end infinite;
+            animation-fill-mode: forwards;
+            width: 100%;
+            /* max width target for animation */
+        }
+
+        @keyframes typing {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+
+            /* Will be adjusted by JS based on natural width or container */
+        }
+
+        @keyframes blink-caret {
+
+            from,
+            to {
+                border-color: transparent
+            }
+
+            50% {
+                border-color: var(--neon-purple)
+            }
+        }
+
+        /* --- Escena 4: Carga Lenta --- */
+        .saturn-spinner {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-top-color: var(--cyan-blue);
+            border-bottom-color: var(--cyan-blue);
+            animation: spin 2s linear infinite, glowPulse 3s ease-in-out infinite alternate;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .saturn-spinner::before {
+            content: '';
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border-radius: 50%;
+            border: 2px solid transparent;
+            border-left-color: var(--neon-purple);
+            border-right-color: var(--neon-purple);
+            animation: spin 1.5s linear infinite reverse;
+        }
+
+        .saturn-spinner::after {
+            content: '';
+            position: absolute;
+            top: 35px;
+            left: 35px;
+            right: 35px;
+            bottom: 35px;
+            border-radius: 50%;
+            background: rgba(157, 0, 255, 0.2);
+            box-shadow: 0 0 20px var(--neon-purple);
+            animation: pulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes spin {
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes glowPulse {
+            0% {
+                box-shadow: 0 0 10px var(--cyan-blue);
+            }
+
+            100% {
+                box-shadow: 0 0 30px var(--cyan-blue), inset 0 0 15px var(--cyan-blue);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(0.8);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(1.1);
+                opacity: 1;
+            }
+        }
+
+        .loading-text-container {
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-msg {
+            font-size: 1.1rem;
+            color: var(--pure-white);
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            text-shadow: var(--text-glow-cyan);
+            max-width: 90%;
+        }
+
+        /* --- Escena 5: Revelado --- */
+        .glitch-wrapper {
+            position: relative;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .glitch-image {
+            width: 300px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.5), 0 0 60px rgba(157, 0, 255, 0.3);
+            opacity: 0;
+            /* Base opacity */
+        }
+
+        @media (min-width: 600px) {
+            .glitch-image {
+                width: 400px;
+                height: 400px;
+            }
+        }
+
+        .glitch-anim {
+            animation: glitchEffect 1.5s ease-out forwards;
+        }
+
+        @keyframes glitchEffect {
+            0% {
+                clip-path: inset(50% 0 50% 0);
+                transform: scale(0.8) skewX(20deg);
+                filter: hue-rotate(90deg) grayscale(100%);
+                opacity: 0;
+            }
+
+            20% {
+                clip-path: inset(10% 0 80% 0);
+                transform: scale(1.1) skewX(-10deg);
+                filter: hue-rotate(-90deg);
+                opacity: 1;
+            }
+
+            40% {
+                clip-path: inset(80% 0 10% 0);
+                transform: scale(0.9) skewX(5deg);
+                opacity: 0.8;
+            }
+
+            60% {
+                clip-path: inset(0 0 0 0);
+                transform: scale(1.05) skewX(0);
+                filter: hue-rotate(0deg) invert(20%);
+                opacity: 1;
+            }
+
+            80% {
+                transform: translate(5px, 5px);
+            }
+
+            100% {
+                transform: translate(0, 0);
+                clip-path: inset(0 0 0 0);
+                filter: none;
+                opacity: 1;
+            }
+        }
+
+        .tap-hint {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            color: var(--neon-purple);
+            animation: pulseHint 2s infinite;
+        }
+
+        @keyframes pulseHint {
+
+            0%,
+            100% {
+                opacity: 0.3;
+            }
+
+            50% {
+                opacity: 1;
+                text-shadow: var(--text-glow-purple);
+            }
+        }
+
+        /* --- Escena 6: Visualizador de Letras --- */
+        .visualizer-mode {
+            background-color: #000;
+            transition: background-color 0.2s ease;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Inversión de color cuando cambia el fondo a blanco */
+        .lyric-fullscreen-container,
+        .waveform-container,
+        .particles,
+        .minimal-controls {
+            mix-blend-mode: difference;
+        }
+
+        .flash-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ffffff;
+            opacity: 0;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .flash-anim {
+            animation: flashBang 0.7s cubic-bezier(0.1, 0.9, 0.2, 1);
+        }
+
+        @keyframes flashBang {
+            0% {
+                opacity: 0.8;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+
+        .lyric-fullscreen-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 5;
+            padding: 20px;
+        }
+
+        .lyric-text-large {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-size: 3rem;
+            font-weight: 900;
+            color: #ffffff;
+            text-align: center;
+            text-transform: uppercase;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 40px rgba(255, 255, 255, 0.5), 0 0 80px rgba(255, 255, 255, 0.3);
+            opacity: 0;
+            filter: blur(10px);
+        }
+
+        @media (max-width: 600px) {
+            .lyric-text-large {
+                font-size: 1.8rem;
+            }
+        }
+
+        .lyric-text-large.word-float {
+            animation: floatUpWord 3.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+        }
+
+        @keyframes floatUpWord {
+            0% {
+                transform: translateY(30px) scale(0.95);
+                opacity: 0;
+                filter: blur(10px);
+            }
+
+            10% {
+                transform: translateY(0) scale(1.05);
+                opacity: 1;
+                filter: blur(0px);
+            }
+
+            80% {
+                transform: translateY(-30px) scale(1);
+                opacity: 1;
+                filter: blur(0px);
+            }
+
+            100% {
+                transform: translateY(-60px) scale(1.1);
+                opacity: 0;
+                filter: blur(15px);
+            }
+        }
+
+        .waveform-container {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+            z-index: 4;
+            align-items: flex-end;
+            height: 60px;
+            opacity: 0;
+            transition: opacity 1s;
+        }
+
+        .is-playing~.waveform-container,
+        .is-playing .waveform-container {
+            opacity: 1;
+        }
+
+        .wave-bar {
+            width: 8px;
+            background: #fff;
+            border-radius: 4px;
+            box-shadow: 0 0 10px #fff;
+            animation: waveBounce 1s ease-in-out infinite alternate;
+        }
+
+        .wave-bar:nth-child(even) {
+            animation-delay: 0.2s;
+            animation-duration: 1.2s;
+        }
+
+        .wave-bar:nth-child(3n) {
+            animation-delay: 0.4s;
+            animation-duration: 0.8s;
+        }
+
+        .wave-bar:nth-child(4n) {
+            animation-delay: 0.1s;
+            animation-duration: 1.5s;
+        }
+
+        @keyframes waveBounce {
+            0% {
+                height: 10px;
+            }
+
+            100% {
+                height: 100%;
+            }
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 3;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background: #fff;
+            bottom: -10px;
+            opacity: 0;
+            animation: floatUp 5s linear infinite;
+        }
+
+        .particle.square {
+            width: 3px;
+            height: 3px;
+        }
+
+        .particle.circle {
+            width: 4px;
+            height: 4px;
+            border-radius: 50%;
+            box-shadow: 0 0 8px #fff;
+        }
+
+        @keyframes floatUp {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+
+            10% {
+                opacity: 0.8;
+            }
+
+            90% {
+                opacity: 0.8;
+            }
+
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .controls.minimal-controls {
+            position: absolute;
+            bottom: 120px;
+            z-index: 10;
+        }
+
+        .minimal-controls .play-pause-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid #fff;
+            color: #fff;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+        }
+
+        .minimal-controls .play-pause-btn:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .minimal-controls .icon-play {
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-left: 15px solid #fff;
+            margin-left: 5px;
+        }
+
+        .minimal-controls .play-pause-btn:hover .icon-play {
+            border-left-color: #000;
+        }
+
+        .minimal-controls .icon-pause {
+            width: 15px;
+            height: 15px;
+            border-left: 4px solid #fff;
+            border-right: 4px solid #fff;
+            display: none;
+        }
+
+        .minimal-controls .play-pause-btn:hover .icon-pause {
+            border-color: #000;
+        }
+
+        .is-playing .play-pause-btn {
+            border-color: #fff;
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+
+        .is-playing .icon-play {
+            display: none;
+        }
+
+        .is-playing .icon-pause {
+            display: block;
+        }
+
+        /* Fade out controls when playing to be immersive */
+        .is-playing {
+            opacity: 0.3;
+        }
+
+        .is-playing:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Fondo espacial base -->
+    <div class="stars-bg"></div>
+
+    <!-- Escena 1: Preloader fluído -->
+    <div id="scene1" class="scene active">
+        <div class="loader-wrapper">
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <div class="progress-text" id="progressText">0%</div>
+        </div>
+    </div>
+
+    <!-- Escena 2: Atributos en tarjetas -->
+    <div id="scene2" class="scene">
+        <div class="attributes-wrapper" id="attributesWrapper">
+            <!-- JS inyectará las tarjetas aquí -->
+        </div>
+    </div>
+
+    <!-- Escena 3: Máquina de Escribir -->
+    <div id="scene3" class="scene">
+        <div class="typewriter" id="typewriterText">Creando a la persona perfecta...</div>
+    </div>
+
+    <!-- Escena 4: Carga Lenta (Buscando Imperfecciones) -->
+    <div id="scene4" class="scene">
+        <div class="saturn-spinner"></div>
+        <div class="loading-text-container">
+            <div class="loading-msg" id="loadingMsg"></div>
+        </div>
+    </div>
+
+    <!-- Escena 5: El Revelado -->
+    <div id="scene5" class="scene">
+        <div class="glitch-wrapper" onclick="goToScene(6)">
+            <!-- Placeholder para la imagen de 400x400 -->
+            <img src="vanne.jpeg" alt="Vanne" class="glitch-image" id="revealImage">
+            <div class="tap-hint">HAZ CLICK PARA CONTINUAR</div>
+        </div>
+    </div>
+
+    <!-- Escena 6: Visualizador Fluido -->
+    <div id="scene6" class="scene visualizer-mode">
+        <!-- Flash estroboscópico -->
+        <div class="flash-overlay" id="flashOverlay"></div>
+
+        <!-- Partículas antigravedad -->
+        <div class="particles" id="particlesContainer"></div>
+
+        <!-- Letras Flotantes Gigantes -->
+        <div class="lyric-fullscreen-container">
+            <div class="lyric-text-large" id="lyricDisplay">...</div>
+        </div>
+
+        <!-- Visualizador forma de onda -->
+        <div class="waveform-container" id="waveform">
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+            <div class="wave-bar"></div>
+        </div>
+
+        <!-- Controles minimalistas -->
+        <div class="controls minimal-controls" id="playerUI">
+            <button class="play-pause-btn" onclick="toggleMusic()">
+                <div class="icon-play"></div>
+                <div class="icon-pause"></div>
+            </button>
+        </div>
+
+        <!-- Elemento de Audio -->
+        <audio id="bgAudio" src="besito en la frente.mp3"></audio>
+    </div>
+
+    <script>
+        // Utilidades Principales
+        const getEl = id => document.getElementById(id);
+
+        const goToScene = (num) => {
+            document.querySelectorAll('.scene').forEach(el => el.classList.remove('active'));
+            const target = getEl(`scene${num}`);
+            if (target) {
+                target.classList.add('active');
+            }
+        };
+
+        // ============================================
+        // Flujo Timeline Principal
+        // ============================================
+        window.onload = () => {
+            initScene1();
+            setupVisualizer();
+        };
+
+        const setupVisualizer = () => {
+            const partCont = document.getElementById('particlesContainer');
+            if (!partCont) return;
+            // Optimizado a 15 partículas en lugar de 40
+            for (let i = 0; i < 15; i++) {
+                let p = document.createElement('div');
+                p.classList.add('particle');
+                p.classList.add(Math.random() > 0.5 ? 'square' : 'circle');
+                p.style.left = Math.random() * 100 + '%';
+                p.style.animationDuration = (Math.random() * 4 + 2) + 's';
+                p.style.animationDelay = Math.random() * 5 + 's';
+                // variamos opacidad
+                p.style.opacity = Math.random() * 0.5 + 0.3;
+                p.style.transform = `scale(${Math.random() * 0.8 + 0.5})`;
+                partCont.appendChild(p);
+            }
+        };
+
+        // --- SCENE 1: Preloader ---
+        const initScene1 = () => {
+            let progress = 0;
+            const bar = getEl('progressBar');
+            const text = getEl('progressText');
+
+            const interval = setInterval(() => {
+                // Sube fluido
+                progress += Math.random() * 3 + 1;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    setTimeout(() => initScene2(), 1000); // 1s de pausa 100%
+                }
+                bar.style.width = `${progress}%`;
+                text.innerText = `${Math.floor(progress)}%`;
+            }, 50); // updates rapidos
+        };
+
+        // --- SCENE 2: The Stitch Files (Atributos) ---
+        const attributes = [
+            "Carácter: 92%", "Corazón: 110%", "Orgullo: 85%", "Forma de querer: 120%",
+            "Forma de enojarse: 95%", "Sensibilidad: 88%", "Autenticidad: 100%", "Energía: 105%",
+            "Mirada: 98%", "Actitud: 90%", "Vulnerabilidad: 60%", "Lealtad: 1000%",
+            "Paciencia: 70%", "Forma de pensar: 95%", "Nivel de rareza: 100%",
+            "Capacidad de perdonar: 75%", "Protección a los suyos: 110%", "Confianza que da: 80%",
+            "Personalidad: 100%", "Esencia: 1000%", "Terquedad: 93%", "Sobrepensar: 97%",
+            "Nivel de \"Besti\": 100%"
+        ];
+
+        const initScene2 = () => {
+            goToScene(2);
+            const wrapper = getEl('attributesWrapper');
+            let idx = 0;
+
+            const flyNextCard = () => {
+                if (idx >= attributes.length) {
+                    setTimeout(() => initScene3(), 2000); // Wait after last card
+                    return;
+                }
+
+                const texto = attributes[idx];
+                const card = document.createElement('div');
+                card.className = 'attr-card';
+                card.innerText = texto;
+
+                // Efecto Neón Especial
+                if (texto.includes('Lealtad') || texto.includes('Esencia')) {
+                    card.classList.add('special-neon');
+                }
+
+                // Altura Random un poco variada
+                const topP = 20 + Math.random() * 60; // entre 20% y 80%
+                card.style.top = `${topP}%`;
+
+                wrapper.appendChild(card);
+
+                // Forzamos reflow para la transición
+                card.offsetWidth;
+
+                // Animación Entrada
+                card.style.right = '50%';
+                card.style.transform = 'translateX(50%)'; // Centrado visual
+
+                // Animación Salida
+                setTimeout(() => {
+                    card.style.right = '150%'; // vuela hacia izquierda infinita
+                    card.style.opacity = '0';
+
+                    // Cleanup HTML
+                    setTimeout(() => card.remove(), 1000);
+                }, 1200); // se queda en medio 1.2s
+
+                idx++;
+                setTimeout(flyNextCard, 400); // Lanza la siguiente cada 400ms
+            };
+
+            setTimeout(flyNextCard, 1000); // 1s pa empezar
+        };
+
+        // --- SCENE 3: Máquina de Escribir ---
+        const initScene3 = () => {
+            // Borrado rapido escena 2 (manejado por CSS fade)
+            goToScene(3);
+
+            // Retrasar la animacion CSS para que se sincronice con el fade-in
+            setTimeout(() => {
+                const tw = getEl('typewriterText');
+                tw.classList.add('typing-anim');
+                // Ajustar el width nativo según caracteres para que el cursor no vuele
+                tw.style.width = "auto";
+                tw.style.display = "inline-block";
+
+                setTimeout(() => initScene4(), 4000); // Después de escribir
+            }, 800);
+        };
+
+        // --- SCENE 4: Carga Lenta Futurista (15s aprox total) ---
+        const loadings = [
+            "Buscando imperfecciones... Error.",
+            "Analizando singularidad... Única en su clase.",
+            "Error crítico: No existen parámetros para tanta perfección.",
+            "Espera... personas así ya no existen en este planeta."
+        ];
+
+        const initScene4 = () => {
+            goToScene(4);
+            const msgEl = getEl('loadingMsg');
+            let i = 0;
+
+            const nextMsg = () => {
+                if (i >= loadings.length) {
+                    setTimeout(() => initScene5(), 1500);
+                    return;
+                }
+
+                // Fade out
+                msgEl.style.opacity = '0';
+
+                setTimeout(() => {
+                    msgEl.innerText = loadings[i];
+                    msgEl.style.opacity = '1';
+                    i++;
+
+                    // Tiempo por mensaje: 3000ms según requiriminto
+                    setTimeout(nextMsg, 3000);
+                }, 500); // Tiempo crossfade css
+            };
+
+            setTimeout(nextMsg, 500);
+        };
+
+        // --- SCENE 5: El Revelado (El Glitch) ---
+        let scene5Timeout;
+        const initScene5 = () => {
+            goToScene(5);
+
+            const img = getEl('revealImage');
+            // Trigger animation class
+            setTimeout(() => {
+                img.classList.add('glitch-anim');
+            }, 500);
+
+            // Transiciona a Scene 6 tras 10s si no hace click
+            scene5Timeout = setTimeout(() => {
+                if (getEl('scene5').classList.contains('active')) {
+                    goToScene(6);
+                }
+            }, 10000);
+        };
+
+        // --- SCENE 6: Reproductor Musical Sincronizado ---
+        const audio = getEl('bgAudio');
+        const ui = getEl('playerUI');
+        const lyricArea = getEl('lyricDisplay');
+
+        // Estructura de Diccionario Letras { Segundos : "Letra" }
+        const lyricsMap = {
+            0: "...",
+            12: "[Intro - Rauw]",
+            15: "Qué bendición lo que estoy viendo",
+            19: "Ya está amaneciendo",
+            22: "La luz en tu piel me está pidiendo",
+            26: "Que te lo haga lento",
+            30: "Ma, tú no entiendes cuánto tú me gustas",
+            33: "Cuando bajas, me subes al cielo",
+            37: "Una vida sin ti yo no quiero",
+            40: "Pensarte y no tenerte me asusta, eh",
+            44: "Un besito en la frente",
+            47: "Por to' lo que se vivió",
+            51: "Y si este momento nunca vuelve",
+            55: "Sé que no se desperdició",
+            58: "Oh-oh-oh (Coros)",
+            62: "Somos eternos tú y yo",
+            66: "Oh-oh-oh (Coros)",
+            71: "Eternos (Ra-Rauw)",
+            74: "Mami, tu alma es libre como primavera",
+            77: "Pa' nuestro amor no existe frontera",
+            81: "Amarrao' a ti como cuero y madera",
+            84: "Suena el barril, morena",
+            87: "Baila, que el calor te suelte la tela",
+            91: "No nos vamos hasta que los pies nos duelan",
+            95: "Danzando en tu areíto",
+            98: "Tierra prometida, quieres que me quede",
+            102: "El agua de tu flor hace que yo me eleve",
+            104: "Y al cielo llegue",
+            106: "Se me cierra hasta el pecho",
+            109: "El día que no estés que nunca llegue",
+            113: "Si tú te vas, que el fuego me queme",
+            116: "Que el fuego me queme",
+            120: "Ma, tú no entiendes cuánto tú me gustas",
+            123: "Cuando bajas, me subes al cielo",
+            127: "Una vida sin ti yo no quiero",
+            130: "Pensarte y no tenerte me asusta, eh",
+            134: "Un besito en la frente",
+            137: "Por to' lo que se vivió",
+            141: "Y si este momento nunca vuelve",
+            145: "Sé que no se desperdició",
+            148: "Oh-oh-oh (Coros)",
+            152: "Somos eternos tú y yo",
+            156: "Oh-oh-oh (Coros)",
+            161: "Eternos"
+        };
+
+        let isPlaying = false;
+        let syncLoop;
+        let pTime = 0; // Usado para simular o seguir el audio real
+
+        const toggleMusic = () => {
+            if (isPlaying) {
+                // PARUSAR
+                audio.pause();
+                isPlaying = false;
+                ui.classList.remove('is-playing');
+                clearInterval(syncLoop);
+            } else {
+                // REPRODUCIR
+                audio.play().catch(e => {
+                    console.warn("Falta fuente de audio o bloqueado por el navegador");
+                });
+                isPlaying = true;
+                ui.classList.add('is-playing');
+
+                // Intervalo para trackear letras
+                syncLoop = setInterval(() => {
+                    // Si existe el mp3 usa: Math.floor(audio.currentTime);
+                    // Como no sé si el html tendrá link directo de mp3 válido, uso mock para demo
+                    // Si hay audio configuralo así:
+                    let currentS = audio.src && audio.src !== "" && audio.src !== window.location.href ? Math.floor(audio.currentTime) : pTime;
+
+                    checkLyrics(currentS);
+
+                    // Solo para mock local
+                    if (!audio.src || audio.src === window.location.href) pTime++;
+                }, 1000);
+            }
+        };
+
+        let lastShownSecond = -1;
+        let bgToggleIndex = 0;
+        const checkLyrics = (second) => {
+            let keyMatches = Object.keys(lyricsMap).map(Number).sort((a, b) => a - b);
+
+            for (let i = keyMatches.length - 1; i >= 0; i--) {
+                const k = keyMatches[i];
+                if (second >= k) {
+                    if (lastShownSecond !== k) {
+                        // Alternar el fondo a blanco y negro
+                        const sc6 = getEl('scene6');
+                        bgToggleIndex = 1 - bgToggleIndex;
+                        sc6.style.backgroundColor = bgToggleIndex === 0 ? '#000' : '#fff';
+
+                        // Flash estroboscópico de fondo
+                        const flash = getEl('flashOverlay');
+                        if (flash) {
+                            flash.classList.remove('flash-anim');
+                            void flash.offsetWidth; // trigger reflow
+                            flash.classList.add('flash-anim');
+                        }
+
+                        // Animación de Letra Antigravedad
+                        lyricArea.classList.remove('word-float');
+                        void lyricArea.offsetWidth; // trigger reflow
+                        lyricArea.innerText = lyricsMap[k];
+                        lyricArea.classList.add('word-float');
+
+                        lastShownSecond = k;
+                    }
+                    break;
+                }
+            }
+        };
+
+    </script>
+</body>
+
+</html>
