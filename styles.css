@@ -1,0 +1,53 @@
+body{
+     margin:0;
+     font-family: Arial;
+     background-color: #eef2f5; /* Fondo gris claro azulado para darle identidad formal */
+}
+
+header{
+     background:#003366; /* Azul institucional GTU */
+     color:white;
+     text-align:center;
+     padding:20px;
+     border-bottom: 5px solid #ffcc00; /* Franja dorada de la escuela */
+}
+
+nav{
+     background:#004d99; /* Un azul un poco más claro para el menú */
+     text-align:center;
+     padding:10px;
+}
+
+nav a{
+     color:white;
+     text-decoration:none;
+     margin:15px;
+     font-weight:bold;
+}
+
+nav a:hover{
+     color:#ffcc00; /* Al pasar el ratón se vuelve color oro/dorado */
+}
+
+section{
+     padding:30px;
+     text-align:center;
+     background-color: white; /* Cajas blancas para separar la información */
+     margin: 20px auto; /* Centramos las cajas */
+     width: 80%; /* Le damos un tamaño para que parezca una página de verdad */
+     border-radius: 8px; /* Bordes ligeramente redonditos */
+     border: 1px solid #dcdcdc; /* Borde sutil */
+}
+
+footer{
+     background:#003366; /* Azul institucional */
+     color:white;
+     text-align:center;
+     padding:20px;
+     border-top: 5px solid #ffcc00; /* Franja dorada arriba del pie de página */
+}
+
+ul {
+     list-style-position: inside;
+     padding: 0;
+}
