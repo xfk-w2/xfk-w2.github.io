@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+
+    <title>Formulario Completo</title>
+
+
+
+    <style>
+        body {
+
+            margin: 0;
+
+            padding: 0;
+
+            font-family: Arial, sans-serif;
+
+            background: linear-gradient(to right, #4facfe, #00f2fe);
+
+        }
+
+
+
+        .contenedor {
+
+            width: 400px;
+
+            background: white;
+
+            margin: 50px auto;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.3);
+
+        }
+
+
+
+        h1 {
+
+            text-align: center;
+
+            color: #333;
+
+        }
+
+
+
+        label {
+
+            display: block;
+
+            margin-top: 15px;
+
+            font-weight: bold;
+
+        }
+
+
+
+        input,
+        textarea,
+        select {
+
+            width: 100%;
+
+            padding: 10px;
+
+            margin-top: 5px;
+
+            border-radius: 8px;
+
+            border: 1px solid #ccc;
+
+            box-sizing: border-box;
+
+        }
+
+
+
+        textarea {
+
+            resize: none;
+
+        }
+
+
+
+        button {
+
+            width: 100%;
+
+            padding: 12px;
+
+            margin-top: 20px;
+
+            background: #0077ff;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 8px;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+            transition: 0.3s;
+
+        }
+
+
+
+        button:hover {
+
+            background: #0055cc;
+
+            transform: scale(1.03);
+
+        }
+    </style>
+
+</head>
+
+
+
+<body>
+
+
+
+    <div class="contenedor">
+
+
+
+        <h1>Formulario de Registro</h1>
+
+
+
+        <form action="https://formsubmit.co/leoncitoantrax123S@gmail.com" method="POST">
+
+
+
+            <label for="nombre">Nombre completo</label>
+
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label for="genero">Estado civil</label>
+            <select id="genero" name="genero">
+
+
+
+                <option value="">Estado civil</option>
+
+                <option value="Soltero">Soltero</option>
+
+                <option value="Casado">Casado</option>
+
+                <option value="Divorciado">Divorciado</option>
+
+                <option value="Union Libre">Union Libre</option>
+
+                <option value="Otro">Otro</option>
+
+
+
+            </select>
+
+
+
+            <label for="correo">Correo electrónico</label>
+
+            <input type="email" id="correo" name="correo" required>
+
+
+
+            <label for="edad">Edad</label>
+
+            <input type="number" id="edad" name="edad" required>
+
+
+
+            <label for="genero">Género</label>
+
+            <select id="genero" name="genero">
+
+
+
+                <option value="">Selecciona una opción</option>
+
+                <option value="Masculino">Masculino</option>
+
+                <option value="Femenino">Femenino</option>
+
+                <option value="Otro">Otro</option>
+
+
+
+            </select>
+
+
+
+            <label for="comentarios">Comentarios</label>
+
+            <textarea id="comentarios" name="comentarios" rows="5"></textarea>
+
+            <label for="direccion">Direccion</label>
+
+            <textarea id="direccion" name="direccion" rows="5"></textarea>
+
+
+
+            <input type="hidden" name="_captcha" value="false">
+
+
+
+            <input type="hidden" name="_next" value="https://google.com">
+
+
+
+            <button type="submit">Enviar formulario</button>
+
+
+
+        </form>
+
+
+
+    </div>
+
+
+
+</body>
+
+</html>
