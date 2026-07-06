@@ -1,0 +1,400 @@
+/* ========================================================== */
+/* PALETA SALMVERSE — PORTAL GRUPO 601                        */
+/* #850e35 | #ee6983 | #ffc4c4 | #fff5e4                     */
+/* ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+:root {
+    --crimson:   #850e35;
+    --rose:      #ee6983;
+    --blush:     #ffc4c4;
+    --cream:     #fff5e4;
+
+    --text-dark:    #3a0820;
+    --text-mid:     #850e35;
+    --text-light:   #fff5e4;
+    --card-bg:      #ffffff;
+    --shadow-rose:  rgba(238, 105, 131, 0.25);
+    --shadow-dark:  rgba(133, 14, 53, 0.15);
+}
+
+/* ---- RESET ---- */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+    background: linear-gradient(160deg, var(--cream) 0%, #fdeaf0 50%, var(--blush) 100%);
+    color: var(--text-dark);
+    font-family: 'Fredoka', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+header {
+    background: linear-gradient(135deg, var(--crimson) 0%, var(--rose) 100%);
+    padding: 0 20px;
+    box-shadow: 0 6px 24px var(--shadow-dark);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Sutil brillo decorativo en el header */
+header::before {
+    content: '';
+    position: absolute;
+    top: -60%;
+    right: -10%;
+    width: 340px;
+    height: 340px;
+    background: radial-gradient(circle, rgba(255,245,228,0.15) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+.header {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 72px;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.logo-img { height: 50px; width: auto; }
+
+.logo-area h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 26px;
+    margin: 0;
+    color: var(--cream);
+    letter-spacing: 0.5px;
+}
+
+/* ---- NAV ---- */
+.nav-menu {
+    display: flex;
+    gap: 6px;
+}
+
+.nav-menu a {
+    color: rgba(255, 245, 228, 0.9);
+    text-decoration: none;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 8px 14px;
+    border-radius: 50px;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.2s ease;
+}
+
+.nav-menu a:hover {
+    background: rgba(255, 245, 228, 0.2);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+/* ============================================================
+   SECCIONES
+   ============================================================ */
+.seccion {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.primer.contenedor {
+    max-width: 820px;
+    margin: 0 auto;
+    border-radius: 20px;
+    padding: 44px 48px;
+    background: #ffffff;
+    box-shadow: 0 16px 48px var(--shadow-rose), 0 2px 8px rgba(0,0,0,0.04);
+    border: 1.5px solid rgba(238, 105, 131, 0.18);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Acento de color en esquina superior izquierda */
+.primer.contenedor::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 6px;
+    height: 100%;
+    background: linear-gradient(to bottom, var(--crimson), var(--blush));
+    border-radius: 20px 0 0 20px;
+}
+
+.titulo {
+    font-family: 'Playfair Display', serif;
+    color: var(--crimson);
+    font-size: 38px;
+    margin-bottom: 18px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.seccion p {
+    font-size: 17px;
+    line-height: 1.7;
+    margin-bottom: 22px;
+    color: var(--text-dark);
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+    background: linear-gradient(135deg, var(--crimson) 0%, var(--rose) 100%);
+    color: var(--cream);
+    text-align: center;
+    padding: 28px 20px;
+    margin-top: 60px;
+    box-shadow: 0 -6px 24px var(--shadow-dark);
+}
+
+.segundo.contenedor p {
+    font-size: 14px;
+    color: rgba(255, 245, 228, 0.9);
+    margin: 0;
+    letter-spacing: 0.3px;
+}
+
+/* ============================================================
+   RESPONSIVO
+   ============================================================ */
+@media (max-width: 768px) {
+    .header { height: auto; padding: 14px 20px; flex-direction: column; gap: 14px; }
+    .nav-menu { flex-wrap: wrap; justify-content: center; gap: 6px; }
+    .primer.contenedor { padding: 28px 20px; }
+}
+
+/* ============================================================
+   PHOTO GRID — POLAROID STYLE
+   ============================================================ */
+.photo-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 28px;
+    justify-content: center;
+    margin-top: 40px;
+    padding: 10px 0;
+}
+
+.photo-card {
+    background: #ffffff;
+    padding: 10px 10px 26px 10px;
+    border-radius: 12px;
+    box-shadow: 0 8px 28px var(--shadow-rose);
+    transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                box-shadow 0.35s ease,
+                border-color 0.3s ease;
+    cursor: pointer;
+    border: 3px solid var(--blush);
+    width: 220px;
+    text-align: center;
+}
+
+.photo-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 6px;
+    display: block;
+}
+
+.photo-card .card-title {
+    display: block;
+    margin-top: 14px;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--crimson);
+    letter-spacing: 0.3px;
+    transition: color 0.25s ease;
+}
+
+.photo-card:hover {
+    transform: scale(1.07) rotate(0deg) !important;
+    box-shadow: 0 18px 42px rgba(133, 14, 53, 0.22);
+    border-color: var(--rose);
+    z-index: 5;
+}
+
+.photo-card:hover .card-title {
+    color: var(--rose);
+}
+
+/* Rotaciones orgánicas */
+.photo-card:nth-child(3n+1) { transform: rotate(-2.5deg); }
+.photo-card:nth-child(3n+2) { transform: rotate(1.8deg); }
+.photo-card:nth-child(3n)   { transform: rotate(-1deg); }
+
+/* ============================================================
+   COLLAGE ÚNICA
+   ============================================================ */
+.collage-single-container {
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+}
+
+.collage-single-img {
+    max-width: 88%;
+    height: auto;
+    border-radius: 14px;
+    box-shadow: 0 12px 40px var(--shadow-rose);
+    transform: rotate(-1.8deg);
+    transition: transform 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+                box-shadow 0.35s ease,
+                border-color 0.3s ease;
+    cursor: pointer;
+    border: 5px solid var(--blush);
+    background: #fff;
+}
+
+.collage-single-img:hover {
+    transform: rotate(0deg) scale(1.03);
+    border-color: var(--rose);
+    box-shadow: 0 20px 50px rgba(133, 14, 53, 0.28);
+}
+
+/* ============================================================
+   LISTA DE ALUMNOS
+   ============================================================ */
+.student-list-container {
+    margin: 40px auto 0;
+    text-align: left;
+    max-width: 820px;
+    padding: 30px 34px;
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1.5px solid rgba(238, 105, 131, 0.2);
+    box-shadow: 0 12px 36px var(--shadow-rose);
+}
+
+.student-list-container h3 {
+    margin-top: 0;
+    color: var(--crimson);
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    border-bottom: 2px solid var(--blush);
+    padding-bottom: 12px;
+    margin-bottom: 22px;
+}
+
+.student-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+    gap: 14px;
+}
+
+.student-list li {
+    padding: 13px 16px;
+    background: var(--cream);
+    border-radius: 10px;
+    box-shadow: 0 3px 10px rgba(238, 105, 131, 0.08);
+    border-left: 5px solid var(--blush);
+    font-size: 15px;
+    line-height: 1.4;
+    transition: transform 0.2s ease, border-left-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.student-list li:hover {
+    transform: translateX(5px);
+    border-left-color: var(--rose);
+    box-shadow: 0 6px 18px rgba(238, 105, 131, 0.18);
+}
+
+.student-list li strong {
+    color: var(--crimson);
+    text-transform: capitalize;
+}
+
+/* ============================================================
+   TARJETAS DE MATERIAS
+   ============================================================ */
+.subject-card {
+    text-align: left;
+    margin-bottom: 22px;
+    padding: 22px 24px;
+    border-radius: 12px;
+    background: var(--cream);
+    border-left: 6px solid var(--rose);
+    border: 1px solid rgba(238, 105, 131, 0.15);
+    border-left-width: 6px;
+    box-shadow: 0 4px 14px rgba(238, 105, 131, 0.08);
+    transition: transform 0.22s ease, border-left-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.subject-card:hover {
+    transform: translateX(5px);
+    border-left-color: var(--crimson);
+    box-shadow: 0 10px 28px rgba(133, 14, 53, 0.16);
+}
+
+.subject-card strong {
+    font-size: 20px;
+    color: var(--crimson);
+    display: block;
+    margin-bottom: 8px;
+    font-family: 'Playfair Display', serif;
+}
+
+.subject-card p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-dark);
+}
+
+/* ============================================================
+   WIDGET DE PALETA DE COLORES
+   ============================================================ */
+.palette-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 14px;
+    margin-top: 22px;
+}
+
+.palette-color {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 22px 10px;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(133, 14, 53, 0.1);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
+    cursor: pointer;
+    text-align: center;
+}
+
+.palette-color:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 14px 32px rgba(133, 14, 53, 0.22);
+}
+
+.palette-color .color-name {
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.palette-color .color-hex {
+    font-size: 12px;
+    opacity: 0.85;
+    font-family: monospace;
+    letter-spacing: 0.5px;
+}
