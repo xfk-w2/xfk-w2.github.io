@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Puchis Portal</title>
+    <meta name="description" content="Collection of Documents">
+    <meta property="og:title" content="Puchis Portal">
+    <meta property="og:description" content="Collection of Documents">
+    <meta property="og:type" content="website">
+    <!-- Importación de tipografía de burbuja (Fredoka) -->
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ========================================================== */
+        /* SECCIÓN DE COLORES - PALETA BLUE + ORANGE                  */
+        /* ========================================================== */
+        body {
+            background-color: #ffffff;
+            /* aquí se cambia el fondo de la página (Blanco) */
+            color: #2c599d;
+            /* aquí se cambia el color del texto base (Azul medio #2C599D) */
+            font-family: 'Fredoka', sans-serif;
+            /* aquí se cambia la tipografía a letra de burbuja */
+            margin: 0;
+            padding: 0;
+        }
+
+        /* HEADER / CABECERA */
+        header {
+            background-color: #11224d;
+            /* aquí se cambia el fondo del header (Azul muy oscuro #11224D) */
+            color: #ffffff;
+            /* aquí se cambia el color de letra del header (Blanco) */
+            padding: 15px 20px;
+            /* aquí se cambia el tamaño (grosor) del header */
+        }
+
+        .header {
+            max-width: 1200px;
+            /* aquí se cambia el ancho máximo de la cabecera */
+            margin: 0 auto;
+            /* centra el contenido de la cabecera */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            /* separa el logo a la izquierda y el menú a la derecha */
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-img {
+            height: 50px;
+            /* aquí se cambia la altura del logo */
+            width: auto;
+            /* mantiene la proporción del logo */
+        }
+
+        .logo-area h1 {
+            font-size: 28px;
+            /* aquí se cambia el tamaño del título del header */
+            margin: 0;
+            color: #ffffff;
+            /* aquí se cambia el color del texto del header (Blanco) */
+        }
+
+        /* MENÚ DE ENLACES */
+        .nav-menu {
+            display: flex;
+            gap: 20px;
+            /* aquí se cambia la separación entre los enlaces del menú */
+        }
+
+        .nav-menu a {
+            color: #ffffff;
+            /* aquí se cambia el color de los enlaces del menú (Blanco) */
+            text-decoration: none;
+            font-size: 16px;
+            /* aquí se cambia el tamaño de los enlaces del menú */
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+
+        .nav-menu a:hover {
+            color: #f98125;
+            /* aquí se cambia el color de los enlaces al pasar el cursor (Naranja #F98125) */
+        }
+
+        /* SECCIÓN PRINCIPAL */
+        .seccion {
+            padding: 60px 20px;
+            /* aquí se cambia el espacio (arriba/abajo) de la sección */
+            text-align: center;
+        }
+
+        .primer.contenedor {
+            max-width: 600px;
+            /* aquí se cambia el ancho máximo de la caja central */
+            margin: 0 auto;
+            /* centra el contenedor en la pantalla */
+            border: none;
+            /* sin borde */
+            border-radius: 12px;
+            /* aquí se cambia el redondeado de las esquinas */
+            padding: 30px;
+            /* aquí se cambia el espacio interno de la caja */
+            background-color: #ffffff;
+        }
+
+        .titulo {
+            color: #f98125;
+            /* aquí se cambia el color de los títulos (Naranja #F98125) */
+            font-size: 36px;
+            /* aquí se cambia el tamaño de letra de los títulos */
+            margin-bottom: 15px;
+            /* aquí se cambia el espacio debajo del título */
+        }
+
+        .seccion p {
+            font-size: 18px;
+            /* aquí se cambia el tamaño del texto descriptivo */
+            line-height: 1.5;
+            /* aquí se cambia la separación de líneas del texto */
+            margin-bottom: 25px;
+            /* aquí se cambia el espacio debajo del texto */
+            color: #193a6f;
+            /* aquí se cambia el color de la descripción (Azul oscuro #193A6F) */
+        }
+
+        /* FOOTER / PIE DE PÁGINA */
+        footer {
+            background-color: #11224d;
+            /* aquí se cambia el fondo del footer (Azul muy oscuro #11224D) */
+            color: #ffffff;
+            /* aquí se cambia el color del texto del footer (Blanco) */
+            text-align: center;
+            padding: 20px 20px;
+            /* aquí se cambia el tamaño (grosor) del footer */
+            margin-top: 50px;
+            /* aquí se cambia la distancia con la sección de arriba */
+        }
+
+        .segundo.contenedor p {
+            font-size: 14px;
+            /* aquí se cambia el tamaño del texto legal del footer */
+            color: #5b84c4;
+            /* aquí se cambia el color del texto legal (Azul claro #5B84C4) */
+            margin: 0;
+        }
+
+        /* RESPONSIVO */
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .nav-menu {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 12px;
+            }
+        }
+
+        /* DISEÑO DE LA FOTO DEL COLLAGE INCLINADO */
+        .collage-single-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+        }
+
+        .collage-single-img {
+            max-width: 90%;
+            height: auto;
+            border-radius: 4px;
+            box-shadow: 0 8px 24px rgba(17, 34, 77, 0.15);
+            transform: rotate(-3deg); /* Inclinación de 3 grados hacia la izquierda */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            border: 8px solid #ffffff; /* Borde blanco estilo foto polaroid */
+            background-color: #ffffff;
+        }
+
+        .collage-single-img:hover {
+            transform: rotate(0deg) scale(1.03); /* Se endereza y aumenta levemente al pasar el mouse */
+            box-shadow: 0 12px 32px rgba(17, 34, 77, 0.25);
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="header">
+            <div class="logo-area">
+                <img src="ft.PNG" width="200">
+                <h1>Grupo 601</h1>
+            </div>
+            <nav class="nav-menu">
+                <a href="index.html">Inicio</a>
+                <a href="materias.html">Materias</a>
+                <a href="alumnos.html">Alumnos</a>
+                <a href="proyecto final/maestros.html">Maestros</a>
+                <a href="lugares.html">Lugares Favoritos</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- SECCIÓN DE DESPEDIDA / GRADUACIÓN -->
+    <section class="seccion" id="despedida">
+        <div class="primer contenedor">
+            <h1 class="titulo">Alumnos</h1>
+            <p>
+                Bienvenidos al sitio oficial de nuestra graduación. Cerramos esta etapa en la preparatoria contentos por
+                lo aprendido y listos para lo que sigue. Gracias a los profes que nos tuvieron paciencia (a veces) y a
+                todos los compañeros por hacer el día a día en el salón más divertido. ¡Felicidades, graduados!
+            </p>
+            <div class="collage-single-container">
+                <img src="alumnos_colage.jpg" alt="Colage Alumnos" class="collage-single-img">
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="segundo contenedor">
+            <p>© 2026 Todos los derechos reservados. Grupo 601.</p>
+        </div>
+    </footer>
+</body>
+</html>
