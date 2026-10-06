@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Libro Virtual 3D · Flipbook interactivo</title>
+  <meta name="description" content="Libro virtual interactivo con animación realista de paso de página en 3D. Hojea con clic, arrastre, gestos táctiles o las flechas del teclado." />
+  <meta name="theme-color" content="#16141a" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Outfit:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Pantalla de carga -->
+  <div class="loader" id="loader" role="status" aria-live="polite">
+    <div class="loader__book" aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+    <p class="loader__text">Preparando el libro… <span id="loader-percent">0%</span></p>
+    <div class="loader__bar"><div class="loader__fill" id="loader-fill"></div></div>
+  </div>
+
+  <header class="topbar">
+    <h1 class="topbar__title">Libro <em>virtual</em></h1>
+    <button class="icon-btn" id="btn-fullscreen" type="button" aria-label="Pantalla completa" title="Pantalla completa">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>
+    </button>
+  </header>
+
+  <main class="stage" id="stage">
+    <div class="book-wrap" id="book-wrap">
+      <div class="book-floor-shadow" id="floor-shadow" aria-hidden="true"></div>
+      <!-- Las páginas se generan desde script.js -->
+      <div class="book" id="book" aria-label="Libro interactivo"></div>
+    </div>
+  </main>
+
+  <nav class="controls" aria-label="Navegación del libro">
+    <button class="nav-btn" id="btn-first" type="button" aria-label="Ir a la portada" title="Portada">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 17l-5-5 5-5M11 17l-5-5 5-5"/></svg>
+    </button>
+    <button class="nav-btn" id="btn-prev" type="button" aria-label="Página anterior" title="Anterior (←)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+
+    <div class="indicator">
+      <span class="indicator__label" id="page-label">Portada</span>
+      <div class="indicator__track"><div class="indicator__progress" id="page-progress"></div></div>
+    </div>
+
+    <button class="nav-btn" id="btn-next" type="button" aria-label="Página siguiente" title="Siguiente (→)">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>
+    </button>
+    <button class="nav-btn" id="btn-last" type="button" aria-label="Ir a la contraportada" title="Contraportada">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 17l5-5-5-5M13 17l5-5-5-5"/></svg>
+    </button>
+  </nav>
+
+  <p class="hint" id="hint">Arrastra una esquina, haz clic o usa las flechas ← →</p>
+
+  <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
